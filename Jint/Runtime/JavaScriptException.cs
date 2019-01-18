@@ -39,11 +39,12 @@ namespace Jint.Runtime
             Location = location;
             using (var sb = StringBuilderPool.Rent())
             {
+                var useCallExpressionLocation = Location == null;
                 foreach (var cse in engine.CallStack)
                 {
                     sb.Builder.Append(" at ")
-                        .Append(cse)
-                        .Append("(");
+                    .Append(cse)
+                    .Append("(");
 
                     for (var index = 0; index < cse.CallExpression.Arguments.Count; index++)
                     {
@@ -58,12 +59,18 @@ namespace Jint.Runtime
 
 
                     sb.Builder.Append(") @ ")
-                        .Append(cse.CallExpression.Location.Source)
-                        .Append(" ")
-                        .Append(cse.CallExpression.Location.Start.Column)
-                        .Append(":")
-                        .Append(cse.CallExpression.Location.Start.Line)
-                        .AppendLine();
+                    .Append(cse.CallExpression.Location.Source)
+                    .Append(" ")
+                    .Append(cse.CallExpression.Location.Start.Column)
+                    .Append(":")
+                    .Append(cse.CallExpression.Location.Start.Line)
+                    .AppendLine();
+
+                    if (useCallExpressionLocation)
+                    {
+                        useCallExpressionLocation = false;
+                        Location = cse.CallExpression.Location;
+                    }
                 }
                 CallStack = sb.ToString();
             }

@@ -17,7 +17,7 @@ namespace Jint.Native.Function
         /// http://www.ecma-international.org/ecma-262/5.1/#sec-13.2
         /// </summary>
         public ScriptFunctionInstance(
-            Engine engine, 
+            Engine engine,
             IFunction functionDeclaration,
             LexicalEnvironment scope,
             bool strict)
@@ -104,9 +104,9 @@ namespace Jint.Native.Function
                         arguments);
 
                     var result = _function._body.Execute();
-                    
+
                     var value = result.GetValueOrDefault();
-                    
+
                     if (argumentInstanceRented)
                     {
                         _engine.ExecutionContext.LexicalEnvironment?._record?.FunctionWasCalled();
